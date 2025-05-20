@@ -1,0 +1,49 @@
+CREATE DATABASE IF NOT EXISTS ClinicBookingDB;
+USE ClinicBookingDB;
+
+CREATE TABLE Department (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE Doctor (
+    doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    specialization VARCHAR(100),
+    department_id INT,
+    email VARCHAR(100) UNIQUE,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+
+CREATE TABLE Patient (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    birth_date DATE,
+    phone VARCHAR(20) UNIQUE,
+    email VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE Appointment (
+    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    appointment_date DATETIME NOT NULL,
+    patient_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    reason TEXT,
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id)
+);
+
+CREATE TABLE Prescription (
+    prescription_id INT AUTO_INCREMENT PRIMARY KEY,
+    appointment_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    medicine_name VARCHAR(100) NOT NULL,
+    dosage VARCHAR(100),
+    instructions TEXT,
+    FOREIGN KEY (appointment_id) REFERENCES Appointment(appointment_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id)
+);
+
+
+
